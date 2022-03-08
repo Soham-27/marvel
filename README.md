@@ -1,7 +1,7 @@
 
 
-# Node-Express-Boilerplate!
-This is a basic starter template for a Node.js backend app with basic dependencies installed already. The app is dockerised with MongoDB and PostgreSQL support out-of-the-box.
+# Submission 2022 Backend
+This is a basic starter template for a Node.js backend app with basic dependencies installed already. The app is dockerised with PostgreSQL support out-of-the-box.
 
 
 ## Getting Started
@@ -38,10 +38,3 @@ Contributions are what make the open source community such an amazing place to b
 
 ## License
 Distributed under the MIT License. See `LICENSE` for more information.
-
-
-## Contact
-
-Project Link: [https://github.com/PICT-ACM-Student-Chapter/Node-Express-Boilerplate](https://github.com/PICT-ACM-Student-Chapter/Node-Express-Boilerplate)
-
-
