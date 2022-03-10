@@ -9,7 +9,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./server:/usr/src/app
+      - ./server:/app
       - run_vol:/var/run
       - cache_vol:/var/cache
       - tmp_vol:/tmp
