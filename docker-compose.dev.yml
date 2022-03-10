@@ -26,6 +26,8 @@ services:
     image: postgres
     env_file:
       - ./server/.env.dev
+    volumes: 
+      - db:/var/lib/postgresql/data
   
   # mongo:
   #   container_name: mongo
@@ -46,3 +48,5 @@ volumes:
     driver_opts:
       type: tmpfs
       device: tmpfs
+  db:
+    driver: local
