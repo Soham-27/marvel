@@ -28,6 +28,7 @@ services:
       - ./server/.env.dev
     volumes: 
       - db:/var/lib/postgresql/data
+      - ./server/db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
   
   # mongo:
   #   container_name: mongo
