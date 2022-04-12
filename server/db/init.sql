@@ -2,6 +2,8 @@ CREATE DATABASE submission;
 
 \c submission;
 
+CREATE TYPE years AS ENUM ('FE', 'SE', 'TE', 'BE');
+
 CREATE TABLE users (
 	id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
 	first_name VARCHAR(255) NOT NULL,
