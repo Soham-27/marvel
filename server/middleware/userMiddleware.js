@@ -1,6 +1,6 @@
 const client = require("../db/connect");
 
-exports.isUserAuthenticated = async (req, res, next) => {
+const isUserAuthenticated = async (req, res, next) => {
     try {
         let query = "select * from user_token where token = $1";
         const token = req.header("Authorization").replace("Bearer ", "");
@@ -10,6 +10,7 @@ exports.isUserAuthenticated = async (req, res, next) => {
             return res.status(401).json({ error: "Unauthorized user!" });
         }
         const userId = data.rows[0].fk_user;
+        const ems_token = data.rows[0].ems_token
         query =
             "SELECT id, first_name, last_name, email, mobile_number, college, created_at, updated_at from users where id = $1";
         params = [userId];
@@ -19,9 +20,12 @@ exports.isUserAuthenticated = async (req, res, next) => {
         }
         req.user = result.rows[0];
         req.token = token;
+        req.ems_token = ems_token;
         next();
 
     } catch (err) {
         return res.status(401).json({ error: 'Unautherised Admin!' });
     }
 }
+
+module.exports = isUserAuthenticated;

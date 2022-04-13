@@ -22,64 +22,65 @@ CREATE TABLE user_token (
 	token VARCHAR(255) NOT NULL,
 	is_valid BOOLEAN NOT NULL,
 	ems_token VARCHAR(256) NOT NULL,
-	fk_user INT NOT NULL REFERENCES users(id),
+	fk_user INT,
+	CONSTRAINT fk_user FOREIGN KEY(fk_user) REFERENCES users(id) ON DELETE CASCADE,
 	created_at TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP NOT NULL
 );
 
 
-CREATE TABLE event_details (
-	id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
-	event_name VARCHAR(255) NOT NULL,
-	ems_event_id INT,
-    submission_table VARCHAR(255) NOT NULL,
-	start_time TIMESTAMP NOT NULL,
-	end_time TIMESTAMP NOT NULL, 
-	created_at TIMESTAMP NOT NULL,
-	updated_at TIMESTAMP NOT NULL
-);
+-- CREATE TABLE event_details (
+-- 	id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
+-- 	event_name VARCHAR(255) NOT NULL,
+-- 	ems_event_id INT,
+--     submission_table VARCHAR(255) NOT NULL,
+-- 	start_time TIMESTAMP NOT NULL,
+-- 	end_time TIMESTAMP NOT NULL, 
+-- 	created_at TIMESTAMP NOT NULL,
+-- 	updated_at TIMESTAMP NOT NULL
+-- );
 
-CREATE TABLE webapp_submission (
-    id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
-    fk_user INT NOT NULL REFERENCES users(id),
-	submission VARCHAR(256) NOT NULL,
-    active_submission BOOLEAN NOT NULL,
-	created_at TIMESTAMP NOT NULL,
-	updated_at TIMESTAMP NOT NULL
-);
+-- CREATE TABLE webapp_submission (
+--     id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
+--     fk_user INT NOT NULL REFERENCES users(id),
+-- 	submission VARCHAR(256) NOT NULL,
+--     active_submission BOOLEAN NOT NULL,
+-- 	created_at TIMESTAMP NOT NULL,
+-- 	updated_at TIMESTAMP NOT NULL
+-- );
 
-CREATE TABLE paper_submission (
-    id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
-    fk_user INT NOT NULL REFERENCES users(id),
-	submission VARCHAR(255) NOT NULL,
-    active_submission BOOLEAN NOT NULL,
-	created_at TIMESTAMP NOT NULL,
-	updated_at TIMESTAMP NOT NULL
-);
+-- CREATE TABLE paper_submission (
+--     id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
+--     fk_user INT NOT NULL REFERENCES users(id),
+-- 	submission VARCHAR(255) NOT NULL,
+--     active_submission BOOLEAN NOT NULL,
+-- 	created_at TIMESTAMP NOT NULL,
+-- 	updated_at TIMESTAMP NOT NULL
+-- );
 
-CREATE TABLE photoshop_submission (
-    id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
-    fk_user INT NOT NULL REFERENCES users(id),
-	submission VARCHAR(255) NOT NULL,
-    active_submission BOOLEAN NOT NULL,
-	created_at TIMESTAMP NOT NULL,
-	updated_at TIMESTAMP NOT NULL
-);
+-- CREATE TABLE photoshop_submission (
+--     id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
+--     fk_user INT NOT NULL REFERENCES users(id),
+-- 	submission VARCHAR(255) NOT NULL,
+--     active_submission BOOLEAN NOT NULL,
+-- 	created_at TIMESTAMP NOT NULL,
+-- 	updated_at TIMESTAMP NOT NULL
+-- );
 
-CREATE TABLE insight_submission (
-    id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
-    fk_user INT NOT NULL REFERENCES users(id),
-	submission VARCHAR(255) NOT NULL,
-    active_submission BOOLEAN NOT NULL,
-	created_at TIMESTAMP NOT NULL,
-	updated_at TIMESTAMP NOT NULL
-);
+-- CREATE TABLE insight_submission (
+--     id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
+--     fk_user INT NOT NULL REFERENCES users(id),
+-- 	submission VARCHAR(255) NOT NULL,
+--     active_submission BOOLEAN NOT NULL,
+-- 	created_at TIMESTAMP NOT NULL,
+-- 	updated_at TIMESTAMP NOT NULL
+-- );
 
-CREATE TABLE dataquest_submission (
-    id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
-    fk_user INT NOT NULL REFERENCES users(id),
-	submission VARCHAR(255) NOT NULL,
-    active_submission BOOLEAN NOT NULL, 
-	created_at TIMESTAMP NOT NULL,
-	updated_at TIMESTAMP NOT NULL
-);
+-- CREATE TABLE dataquest_submission (
+--     id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
+--     fk_user INT NOT NULL REFERENCES users(id),
+-- 	submission VARCHAR(255) NOT NULL,
+--     active_submission BOOLEAN NOT NULL, 
+-- 	created_at TIMESTAMP NOT NULL,
+-- 	updated_at TIMESTAMP NOT NULL
+-- );
