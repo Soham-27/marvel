@@ -27,14 +27,7 @@ services:
     env_file:
       - ./server/.env.dev
     volumes: 
-      - db:/var/lib/postgresql/data
       - ./server/db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
-  
-  # mongo:
-  #   container_name: mongo
-  #   image: mongo
-  #   env_file:
-  #     - ./server/.env.dev
 
 volumes:
   run_vol:
@@ -49,5 +42,3 @@ volumes:
     driver_opts:
       type: tmpfs
       device: tmpfs
-  db:
-    driver: local
