@@ -8,6 +8,7 @@ let client = require("./db/connect");
 
 let indexRouter = require('./routes/index');
 const userRouter = require("./routes/user");
+const userEventsRouter = require("./routes/user_events");
 
 let app = express();
 
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use("/user",userRouter);
+app.use("/user_events", userEventsRouter);
 
 app.use('/', indexRouter);
 
