@@ -22,7 +22,9 @@ CREATE TABLE user_token (
 	token VARCHAR(255) NOT NULL,
 	is_valid BOOLEAN NOT NULL,
 	ems_token VARCHAR(256) NOT NULL,
-	fk_user INT NOT NULL REFERENCES users(id) 
+	fk_user INT NOT NULL REFERENCES users(id),
+	created_at TIMESTAMP NOT NULL,
+	updated_at TIMESTAMP NOT NULL
 );
 
 
