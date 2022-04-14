@@ -9,6 +9,9 @@ let client = require("./db/connect");
 let indexRouter = require('./routes/index');
 const userRouter = require("./routes/user");
 const userEventsRouter = require("./routes/user_events");
+const webappRouter= require("./routes/webapp");
+const paperRouter= require("./routes/paperpresentation");
+const photoshopRouter= require("./routes/photoshop");
 
 let app = express();
 
@@ -25,6 +28,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use("/user",userRouter);
 app.use("/user_events", userEventsRouter);
+app.use("/webapp", webappRouter);
+app.use("/paper", paperRouter);
+app.use("/photoshop", photoshopRouter);
 
 app.use('/', indexRouter);
 
