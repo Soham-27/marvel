@@ -1,6 +1,6 @@
 const { default: axios } = require("axios");
 const client = require("../db/connect");
-const masterEvents =  require("../models/master");
+const { masterEvents } =  require("../models/master");
 const format = require('pg-format');
 
 const setArr = (ems_events, submission_events, ems_id, userId, finalArr) => {

@@ -26,4 +26,12 @@ const masterEvents = [
     },
 ]
 
-module.exports = masterEvents;
+const emsIds = {
+    dataquest: 2,
+    web: 3,
+    insight: 4,
+    photoshop: 5,
+    paper: 6,
+}
+
+module.exports = {masterEvents, emsIds};
