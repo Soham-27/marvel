@@ -12,6 +12,7 @@ const userEventsRouter = require("./routes/user_events");
 const webappRouter= require("./routes/webapp");
 const paperRouter= require("./routes/paperpresentation");
 const photoshopRouter= require("./routes/photoshop");
+const insightRouter= require("./routes/insight");
 
 let app = express();
 
@@ -31,6 +32,7 @@ app.use("/user_events", userEventsRouter);
 app.use("/webapp", webappRouter);
 app.use("/paper", paperRouter);
 app.use("/photoshop", photoshopRouter);
+app.use("/insight",insightRouter);
 
 app.use('/', indexRouter);
 

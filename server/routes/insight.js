@@ -9,7 +9,8 @@ const router = new express.Router();
 
 router.post('/',isUserAuthenticated, async(req,res)=>{
     const submission=req.body;
-    const ems_id= emsIds.web;
+    const topic=req.body;
+    const ems_id= emsIds.insight;
     try {
         const data= await client.query(
             "SELECT* FROM user_events WHERE fk_user=$1 and ems_id=$2",
@@ -22,8 +23,8 @@ router.post('/',isUserAuthenticated, async(req,res)=>{
            })
         }
         const response= await client.query(
-            "INSERT INTO webapp(submission, active_submission, fk_user, created_at, updated_at) VALUES($1, $2, $3, $4, $5) RETURNING *",
-            [submission, true, req.user.id,new Date(), new Date() ]
+            "INSERT INTO insight(topic,submission, active_submission, fk_user, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6) RETURNING *",
+            [topic, submission, true, req.user.id,new Date(), new Date() ]
         );
         res.send({
             submission:response.rows[0]
@@ -44,7 +45,7 @@ router.post('/',isUserAuthenticated, async(req,res)=>{
 router.get('/', isUserAuthenticated, async (req, res) => {
     try {
         const response = await client.query(
-            "SELECT * FROM webapp WHERE fk_user= $1",
+            "SELECT * FROM insight WHERE fk_user= $1",
             [req.user.id]
         );
 
