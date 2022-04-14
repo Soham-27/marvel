@@ -3,13 +3,24 @@
 const express = require('express');
 const client = require('../db/connect');
 const isUserAuthenticated = require('../middleware/userMiddleware');
+const {emsIds} = require("../models/master");
 
 const router = new express.Router();
 
 router.post('/',isUserAuthenticated, async(req,res)=>{
     const url=req.body;
+    const ems_id= emsIds.web;
     try {
+        const data= await client.query(
+            "SELECT* FROM user_events WHERE fk_user=$1 and ems_id=$2",
+            [req.user.id, ems_id]
+        );
 
+        if(data.rowCount===0){
+           return res.status(400).send({
+               error:"User havent Registered "
+           })
+        }
         const response= await client.query(
             "INSERT INTO webapp(submission, active_submission, fk_user, created_at, updated_at) VALUES($1, $2, $3, $4, $5) RETURNING *",
             [url, true, req.user.id,new Date(), new Date() ]
@@ -17,6 +28,8 @@ router.post('/',isUserAuthenticated, async(req,res)=>{
         res.send({
             submission:response.rows[0]
         })
+
+     
 
         
     } catch (error) {
