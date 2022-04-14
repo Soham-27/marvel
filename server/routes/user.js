@@ -3,6 +3,7 @@ const express = require('express');
 const client = require('../db/connect');
 const isUserAuthenticated = require('../middleware/userMiddleware');
 const generateUserToken = require("../utils/generateUserTokens");
+const fetchEvents = require('../utils/fetchEvents');
 
 const router = new express.Router();
 
@@ -39,12 +40,14 @@ router.post('/signin', async (req, res) => {
         const userId = user.id;
         const token = await generateUserToken(userId, ems_token);
 
+        await fetchEvents(ems_token, userId);
+
         res.send({
             user,
             tokens: {
                 token,
                 ems_token
-            }
+            },
         })
     } catch (err) {
         console.log(err)
