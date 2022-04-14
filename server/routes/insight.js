@@ -8,8 +8,7 @@ const {emsIds} = require("../models/master");
 const router = new express.Router();
 
 router.post('/',isUserAuthenticated, async(req,res)=>{
-    const submission=req.body;
-    const topic=req.body;
+    const { submission, topic } =req.body;
     const ems_id= emsIds.insight;
     try {
         const data= await client.query(
@@ -22,6 +21,15 @@ router.post('/',isUserAuthenticated, async(req,res)=>{
                error:"User havent Registered "
            })
         }
+
+        const query = `select exists (select * from insight where fk_user = $1)`
+        const result = await client.query(query, [req.user.id]);
+        if(result.rows[0].exists) {
+            return res.status(400).send({
+                error: "Entry Already Submitted",
+            })
+        }
+
         const response= await client.query(
             "INSERT INTO insight(topic,submission, active_submission, fk_user, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6) RETURNING *",
             [topic, submission, true, req.user.id,new Date(), new Date() ]

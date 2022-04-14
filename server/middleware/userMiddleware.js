@@ -24,7 +24,7 @@ const isUserAuthenticated = async (req, res, next) => {
         next();
 
     } catch (err) {
-        return res.status(401).json({ error: 'Unautherised Admin!' });
+        return res.status(401).json({ error: 'Unautherised User!' });
     }
 }
 

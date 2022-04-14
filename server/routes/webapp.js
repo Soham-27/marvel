@@ -8,7 +8,7 @@ const {emsIds} = require("../models/master");
 const router = new express.Router();
 
 router.post('/',isUserAuthenticated, async(req,res)=>{
-    const submission=req.body;
+    const { submission } = req.body;
     const ems_id= emsIds.web;
     try {
         const data= await client.query(
@@ -20,6 +20,13 @@ router.post('/',isUserAuthenticated, async(req,res)=>{
            return res.status(400).send({
                error:"User havent Registered "
            })
+        }
+        const query = `select exists (select * from webapp where fk_user = $1)`
+        const result = await client.query(query, [req.user.id]);
+        if(result.rows[0].exists) {
+            return res.status(400).send({
+                error: "Entry Already Submitted",
+            })
         }
         const response= await client.query(
             "INSERT INTO webapp(submission, active_submission, fk_user, created_at, updated_at) VALUES($1, $2, $3, $4, $5) RETURNING *",
