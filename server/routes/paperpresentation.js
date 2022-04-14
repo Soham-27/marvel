@@ -5,7 +5,7 @@ const router = require('./user_events');
 const { emsIds } = require("../models/master");
 
 router.post('/', isUserAuthenticated, async (req, res) => {
-    const url = req.body;
+    const submission = req.body;
     const ems_id = emsIds.paper;
     try {
 
@@ -22,7 +22,7 @@ router.post('/', isUserAuthenticated, async (req, res) => {
 
         const response = await client.query(
             "INSERT INTO paper(submission, active_submission, fk_user, created_at, updated_at) VALUES($1, $2, $3, $4, $5) RETURNING * ",
-            [url, true, req.user.id, new Date(), new Date()]
+            [submission, true, req.user.id, new Date(), new Date()]
         );
         res.send({
             submission: response.rows[0]

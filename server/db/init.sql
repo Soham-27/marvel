@@ -91,14 +91,16 @@ CREATE TABLE photoshop (
 	updated_at TIMESTAMP NOT NULL
 );
 
--- CREATE TABLE insight_submission (
---     id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
---     fk_user INT NOT NULL REFERENCES users(id),
--- 	submission VARCHAR(255) NOT NULL,
---     active_submission BOOLEAN NOT NULL,
--- 	created_at TIMESTAMP NOT NULL,
--- 	updated_at TIMESTAMP NOT NULL
--- );
+CREATE TABLE insight (
+    id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
+	topic VARCHAR(255) NOT NULL,
+	submission TEXT NOT NULL,
+    active_submission BOOLEAN NOT NULL,
+	fk_user INT,
+	CONSTRAINT fk_user FOREIGN KEY(fk_user) REFERENCES users(id) ON DELETE CASCADE,
+	created_at TIMESTAMP NOT NULL,
+	updated_at TIMESTAMP NOT NULL
+);
 
 -- CREATE TABLE dataquest_submission (
 --     id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
