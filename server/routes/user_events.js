@@ -1,26 +1,19 @@
 const { default: axios } = require('axios');
 const express = require('express');
+const client = require('../db/connect');
 const isUserAuthenticated = require('../middleware/userMiddleware');
 
 const router = express.Router();
 
 router.get('/', isUserAuthenticated, async (req, res) => {
-    const options = {
-        method: "GET",
-        url: `${process.env.EMS_API}/user_events`,
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${req.ems_token}`,
-        },
-    };
     try {
-        const response = await axios(options);
-        return res.send(response.data);
+        const query = 'select * from user_events where fk_user = $1';
+        const result = await client.query(query, [req.user.id]);
+        res.send({
+            events: result.rows,
+        })
     } catch (err) {
         console.log(err)
-        if (err?.response) {
-            return res.status(400).send(err?.response?.data);
-        }
         return res.status(500).json({ error: "Internal Server Error" });
     }
 })
