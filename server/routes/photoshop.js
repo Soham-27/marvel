@@ -40,4 +40,30 @@ router.post('/', isUserAuthenticated, async (req, res) => {
     }
 })
 
+router.get('/', isUserAuthenticated, async (req, res) => {
+    try {
+        const response = await client.query(
+            "SELECT * FROM photoshop WHERE fk_user= $1",
+            [req.user.id]
+        );
+
+        if (response.rowCount === 0) {
+            return res.status(400).send({
+                error: "Nothing Submitted"
+            })
+        }
+        res.send({
+            submission: response.rows[0]
+        })
+
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            error: "Internal Server error"
+        });
+
+    }
+})
+
 module.exports = router;
