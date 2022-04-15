@@ -3,6 +3,7 @@ let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 let client = require("./db/connect");
+var cors = require('cors')
 
 
 
@@ -21,6 +22,7 @@ client
   .then(() => console.log("connected"))
   .catch((err) => console.error("connection error", err.stack));
   
+app.use(cors()) 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

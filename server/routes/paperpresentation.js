@@ -39,7 +39,7 @@ router.post('/', isUserAuthenticated, async (req, res) => {
         if (paper_type === "Idea Presentation Track") {
             const { submission_abstract } = req.body;
             const response = await client.query(
-                "INSERT INTO paper(paper_type, submission_abstract, active_submission, fk_user, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6) RETURNING * ",
+                "INSERT INTO paper(type, submission_abstract, active_submission, fk_user, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6) RETURNING * ",
                 [paper_type, submission_abstract, true, req.user.id, new Date(), new Date()]
             );
             return res.send({
@@ -55,25 +55,18 @@ router.post('/', isUserAuthenticated, async (req, res) => {
                 })
             }
             const response = await client.query(
-                "INSERT INTO paper(paper_type, submission_abstract, submission_paper, active_submission, fk_user, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING * ",
+                "INSERT INTO paper(type, submission_abstract, submission_paper, active_submission, fk_user, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING * ",
                 [paper_type, submission_abstract, submission_paper, true, req.user.id, new Date(), new Date()]
             );
             return res.send({
                 submission: response.rows[0]
             })
         }
-
-       
-
-
-
     } catch (error) {
         console.log(error);
         res.status(500).send({
             error: "Internal Server error"
         });
-
-
     }
 })
 
@@ -83,7 +76,6 @@ router.get('/', isUserAuthenticated, async (req, res) => {
             "SELECT * FROM paper WHERE fk_user= $1",
             [req.user.id]
         );
-
         if (response.rowCount === 0) {
             return res.status(400).send({
                 error: "Nothing Submitted"
@@ -92,14 +84,11 @@ router.get('/', isUserAuthenticated, async (req, res) => {
         res.send({
             submission: response.rows[0]
         })
-
-
     } catch (error) {
         console.log(error);
         res.status(500).send({
             error: "Internal Server error"
         });
-
     }
 })
 

@@ -87,9 +87,7 @@ CREATE TABLE paper (
 
 CREATE TABLE photoshop (
     id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
-	paper_type type,
-	submission_abstract VARCHAR(2048) NOT NULL,
-	submission_paper VARCHAR(2048),
+	submission VARCHAR(2048) NOT NULL,
     active_submission BOOLEAN NOT NULL,
 	fk_user INT,
 	CONSTRAINT fk_user FOREIGN KEY(fk_user) REFERENCES users(id) ON DELETE CASCADE,

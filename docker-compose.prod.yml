@@ -9,7 +9,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./server:/app
+      - ./server:/usr/src/app
       - run_vol:/var/run
       - cache_vol:/var/cache
       - tmp_vol:/tmp
@@ -17,21 +17,6 @@ services:
       - ./server/.env
     command: >
       sh -c "npm install --production && npm start"
-    depends_on:
-      - postgres
-      # - mongo
-
-  postgres:
-    container_name: postgres
-    image: postgres
-    env_file:
-      - ./server/.env
-  
-  # mongo:
-  #   container_name: mongo
-  #   image: mongo
-  #   env_file:
-  #     - ./server/.env
 
 volumes:
   run_vol:

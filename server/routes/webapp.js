@@ -35,10 +35,6 @@ router.post('/',isUserAuthenticated, async(req,res)=>{
         res.send({
             submission:response.rows[0]
         })
-
-     
-
-        
     } catch (error) {
         console.log(error);
         res.status(500).send({

@@ -44,10 +44,8 @@ router.post('/signin', async (req, res) => {
 
         res.send({
             user,
-            tokens: {
-                token,
-                ems_token
-            },
+            token,
+            ems_token
         })
     } catch (err) {
         console.log(err)

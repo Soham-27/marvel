@@ -9,15 +9,16 @@ const configDev = {
   password: process.env.POSTGRES_PASSWORD,
   database: "submission",
 };
-// const configProd = {
-//    connectionString: process.env.CONN_STRING,
-//    ssl: {
-//      rejectUnauthorized: false,
-//      ca: fs.readFileSync('ca-certificate.crt').toString(),
-//    },
-// };
+console.log(process.env.CONN_STRING)
+const configProd = {
+   connectionString: process.env.CONN_STRING,
+   ssl: {
+     rejectUnauthorized: false,
+     ca: fs.readFileSync('ca-certificate.crt').toString(),
+   },
+};
 
-const configProd = {};
+// const configProd = {};s
 
 const client = new Client(
   process.env.NODE_ENV === "dev" ? configDev : configProd
