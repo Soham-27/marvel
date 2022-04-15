@@ -6,7 +6,8 @@ const { emsIds } = require("../models/master");
 const router = express.Router();
 
 router.post('/', isUserAuthenticated, async (req, res) => {
-    const { submission } = req.body;
+    // const { submission } = req.body;
+    const { paper_type } = req.body;
     const ems_id = emsIds.paper;
     try {
 
@@ -23,19 +24,46 @@ router.post('/', isUserAuthenticated, async (req, res) => {
 
         const query = `select exists (select * from paper where fk_user = $1)`
         const result = await client.query(query, [req.user.id]);
-        if(result.rows[0].exists) {
+        if (result.rows[0].exists) {
             return res.status(400).send({
                 error: "Entry Already Submitted",
             })
         }
+        
+        if(paper_type===""){
+            return res.status(400).send({
+                error:"Paper Type not entered"
+            })
+        }
 
-        const response = await client.query(
-            "INSERT INTO paper(submission, active_submission, fk_user, created_at, updated_at) VALUES($1, $2, $3, $4, $5) RETURNING * ",
-            [submission, true, req.user.id, new Date(), new Date()]
-        );
-        res.send({
-            submission: response.rows[0]
-        })
+        if (paper_type === "Idea Presentation Track") {
+            const { submission_abstract } = req.body;
+            const response = await client.query(
+                "INSERT INTO paper(paper_type, submission_abstract, active_submission, fk_user, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6) RETURNING * ",
+                [paper_type, submission_abstract, true, req.user.id, new Date(), new Date()]
+            );
+            return res.send({
+                submission: response.rows[0]
+            })
+        }
+        if (paper_type === "Paper Presentation Track") {
+            const { submission_abstract } = req.body;
+            const { submission_paper } = req.body;
+            if(submission_paper===""){
+                return res.status(400).send({
+                    error:"Paper Not Submitted"
+                })
+            }
+            const response = await client.query(
+                "INSERT INTO paper(paper_type, submission_abstract, submission_paper, active_submission, fk_user, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING * ",
+                [paper_type, submission_abstract, submission_paper, true, req.user.id, new Date(), new Date()]
+            );
+            return res.send({
+                submission: response.rows[0]
+            })
+        }
+
+       
 
 
 

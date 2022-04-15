@@ -63,7 +63,7 @@ CREATE TABLE user_events (
 
 CREATE TABLE webapp (
     id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
-	submission VARCHAR(1024) NOT NULL,
+	submission VARCHAR(2048) NOT NULL,
     active_submission BOOLEAN NOT NULL,
 	fk_user INT,
 	CONSTRAINT fk_user FOREIGN KEY(fk_user) REFERENCES users(id) ON DELETE CASCADE,
@@ -71,9 +71,13 @@ CREATE TABLE webapp (
 	updated_at TIMESTAMP NOT NULL
 );
 
+CREATE TYPE paper_type AS ENUM ('Idea Presentation Track', 'Paper Presentation Track');
+
 CREATE TABLE paper (
     id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
-	submission VARCHAR(1024) NOT NULL,
+	type paper_type,
+	submission_abstract VARCHAR(2048) NOT NULL,
+	submission_paper VARCHAR(2048),
     active_submission BOOLEAN NOT NULL,
 	fk_user INT,
 	CONSTRAINT fk_user FOREIGN KEY(fk_user) REFERENCES users(id) ON DELETE CASCADE,
@@ -83,7 +87,9 @@ CREATE TABLE paper (
 
 CREATE TABLE photoshop (
     id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
-	submission VARCHAR(255) NOT NULL,
+	paper_type type,
+	submission_abstract VARCHAR(2048) NOT NULL,
+	submission_paper VARCHAR(2048),
     active_submission BOOLEAN NOT NULL,
 	fk_user INT,
 	CONSTRAINT fk_user FOREIGN KEY(fk_user) REFERENCES users(id) ON DELETE CASCADE,
@@ -102,11 +108,16 @@ CREATE TABLE insight (
 	updated_at TIMESTAMP NOT NULL
 );
 
--- CREATE TABLE dataquest_submission (
---     id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
---     fk_user INT NOT NULL REFERENCES users(id),
--- 	submission VARCHAR(255) NOT NULL,
---     active_submission BOOLEAN NOT NULL, 
--- 	created_at TIMESTAMP NOT NULL,
--- 	updated_at TIMESTAMP NOT NULL
--- );
+
+
+CREATE TABLE dataquest (
+    id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
+    fk_user INT,
+	CONSTRAINT fk_user FOREIGN KEY(fk_user) REFERENCES users(id) ON DELETE CASCADE,
+	submission_csv VARCHAR(2048) NOT NULL,
+	submission_python VARCHAR(2048) NOT NULL,
+	accuracy FLOAT NOT NULL,
+    active_submission BOOLEAN NOT NULL, 
+	created_at TIMESTAMP NOT NULL,
+	updated_at TIMESTAMP NOT NULL
+);
