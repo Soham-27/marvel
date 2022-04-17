@@ -51,7 +51,7 @@ def eval2():
 
         file_url = request.json['file_url']
         attempt = pd.read_csv(file_url)
-        soln = pd.read_csv('static/fe-se-1.csv')
+        soln = pd.read_csv('static/te-be-1.csv')
 
         private_acc = 200
         public_acc = 200

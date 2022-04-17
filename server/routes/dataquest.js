@@ -102,7 +102,7 @@ router.get('/leaderboard', isUserAuthenticated ,async (req, res) => {
     try {
         if(seniors.includes(req.user.year)) {
             const response = await client.query(
-                "select  users.first_name, users.last_name, MIN(dataquest.public_accuracy), users.email from dataquest join users on dataquest.fk_user = users.id where users.year = $1 or users.year = $2 group by users.first_name, users.last_name, users.email order by MIN(public_accuracy)",
+                "select  users.first_name, users.last_name, MIN(dataquest.public_accuracy), users.email from dataquest join users on dataquest.fk_user = users.id where users.year = $1 or users.year = $2 group by users.first_name, users.last_name, users.email order by 3",
                 isSenior,
             );
             if (response.rowCount === 0) {
@@ -115,7 +115,7 @@ router.get('/leaderboard', isUserAuthenticated ,async (req, res) => {
             })
         } else {
             const response = await client.query(
-                "select  users.first_name, users.last_name, MAX(dataquest.public_accuracy), users.email from dataquest join users on dataquest.fk_user = users.id where users.year = $1 or users.year = $2 group by users.first_name, users.last_name, users.email order by MAX(public_accuracy) -1",
+                "select  users.first_name, users.last_name, MAX(dataquest.public_accuracy), users.email from dataquest join users on dataquest.fk_user = users.id where users.year = $1 or users.year = $2 group by users.first_name, users.last_name, users.email order by 3 -1",
                 isSenior,
             );
             if (response.rowCount === 0) {
