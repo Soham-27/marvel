@@ -114,7 +114,8 @@ CREATE TABLE dataquest (
 	CONSTRAINT fk_user FOREIGN KEY(fk_user) REFERENCES users(id) ON DELETE CASCADE,
 	submission_csv VARCHAR(2048) NOT NULL,
 	submission_python VARCHAR(2048) NOT NULL,
-	accuracy FLOAT NOT NULL,
+	private_accuracy FLOAT NOT NULL,
+	public_accuracy FLOAT NOT NULL,
     active_submission BOOLEAN NOT NULL, 
 	created_at TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP NOT NULL

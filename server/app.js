@@ -14,6 +14,7 @@ const webappRouter= require("./routes/webapp");
 const paperRouter= require("./routes/paperpresentation");
 const photoshopRouter= require("./routes/photoshop");
 const insightRouter= require("./routes/insight");
+const dataquestRouter = require("./routes/dataquest");
 
 let app = express();
 
@@ -35,6 +36,7 @@ app.use("/webapp", webappRouter);
 app.use("/paper", paperRouter);
 app.use("/photoshop", photoshopRouter);
 app.use("/insight",insightRouter);
+app.use('/dataquest', dataquestRouter);
 
 app.use('/', indexRouter);
 
