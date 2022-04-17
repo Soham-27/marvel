@@ -1,4 +1,5 @@
 FROM node:16-alpine3.14 as builder
 WORKDIR /usr/src/app
+EXPOSE 8000
 COPY . .
 # ENTRYPOINT ["npm", "run", "dev"]

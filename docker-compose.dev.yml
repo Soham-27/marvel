@@ -29,6 +29,16 @@ services:
     volumes: 
       - ./server/db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
 
+  evaluation: 
+    container_name: evaluation
+    image: evaluation
+    build:
+      context: ./dataquest-evaluation-server
+    ports:
+      - "5000:5000"
+    command: >
+      sh -c "python3 -m venv venv && gunicorn --bind 0.0.0.0:5000 wsgi:app"
+
 volumes:
   run_vol:
     driver_opts:
@@ -42,3 +52,4 @@ volumes:
     driver_opts:
       type: tmpfs
       device: tmpfs
+      

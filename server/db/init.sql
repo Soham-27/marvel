@@ -114,8 +114,27 @@ CREATE TABLE dataquest (
 	CONSTRAINT fk_user FOREIGN KEY(fk_user) REFERENCES users(id) ON DELETE CASCADE,
 	submission_csv VARCHAR(2048) NOT NULL,
 	submission_python VARCHAR(2048) NOT NULL,
-	accuracy FLOAT NOT NULL,
+	private_accuracy FLOAT NOT NULL,
+	public_accuracy FLOAT NOT NULL,
     active_submission BOOLEAN NOT NULL, 
 	created_at TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE Admin(
+	id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
+	username VARCHAR(255) NOT NULL UNIQUE,
+	password VARCHAR(255) NOT NULL,
+	created_at TIMESTAMP NOT NULL,
+	updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE admin_token (
+	id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
+	token VARCHAR(255) NOT NULL,
+	is_valid BOOLEAN NOT NULL,
+	created_at TIMESTAMP NOT NULL,
+	updated_at TIMESTAMP NOT NULL,
+	fk_admin INT,
+	CONSTRAINT fk_admin FOREIGN KEY(fk_admin) REFERENCES Admin(id) ON DELETE CASCADE
 );

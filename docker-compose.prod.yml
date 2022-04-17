@@ -17,6 +17,16 @@ services:
       - ./server/.env
     command: >
       sh -c "npm install --production && npm start"
+  
+  evaluation: 
+    container_name: evaluation
+    image: evaluation
+    build:
+      context: ./dataquest-evaluation-server
+    ports:
+      - "5000:5000"
+    command: >
+      sh -c "python3 -m venv venv && gunicorn --bind 0.0.0.0:5000 wsgi:app"
 
 volumes:
   run_vol:
