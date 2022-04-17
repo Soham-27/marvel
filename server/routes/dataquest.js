@@ -100,18 +100,33 @@ router.get('/leaderboard', isUserAuthenticated ,async (req, res) => {
     const seniors = [ 'TE', 'BE' ]
     const isSenior = seniors.includes(req.user.year) ? seniors : ['FE', 'SE'];
     try {
-        const response = await client.query(
-            "select  users.first_name, users.last_name, MIN(dataquest.public_accuracy), users.email from dataquest join users on dataquest.fk_user = users.id where users.year = $1 or users.year = $2 group by users.first_name, users.last_name, users.email order by MIN(public_accuracy)",
-            isSenior,
-        );
-        if (response.rowCount === 0) {
-            return res.status(400).send({
-                error: "Leaderboard is empty"
+        if(seniors.includes(req.user.year)) {
+            const response = await client.query(
+                "select  users.first_name, users.last_name, MIN(dataquest.public_accuracy), users.email from dataquest join users on dataquest.fk_user = users.id where users.year = $1 or users.year = $2 group by users.first_name, users.last_name, users.email order by MIN(public_accuracy)",
+                isSenior,
+            );
+            if (response.rowCount === 0) {
+                return res.status(400).send({
+                    error: "Leaderboard is empty"
+                })
+            }
+            res.send({
+                submissions: response.rows
+            })
+        } else {
+            const response = await client.query(
+                "select  users.first_name, users.last_name, MAX(dataquest.public_accuracy), users.email from dataquest join users on dataquest.fk_user = users.id where users.year = $1 or users.year = $2 group by users.first_name, users.last_name, users.email order by MAX(public_accuracy) -1",
+                isSenior,
+            );
+            if (response.rowCount === 0) {
+                return res.status(400).send({
+                    error: "Leaderboard is empty"
+                })
+            }
+            res.send({
+                submissions: response.rows
             })
         }
-        res.send({
-            submissions: response.rows
-        })
     } catch (error) {
         console.log(error);
         res.status(500).send({

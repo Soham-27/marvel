@@ -53,8 +53,8 @@ def eval2():
         attempt = pd.read_csv(file_url)
         soln = pd.read_csv('static/fe-se-1.csv')
 
-        private_acc = 0
-        public_acc = 0
+        private_acc = 200
+        public_acc = 200
 
         if attempt.shape == soln.shape:
             
@@ -84,8 +84,8 @@ def eval2():
             public_acc = rmse_tp(public_soln_reg, public_att_reg, public_soln_cl, public_att_cl)
             private_acc = rmse_tp(private_soln_reg, private_att_reg, private_soln_cl, private_att_cl)
 
-    return {'private': 100 - private_acc,
-    'public': 100 - public_acc}
+    return {'private': private_acc,
+    'public': public_acc}
 
 
 # if __name__ == "__main__":
