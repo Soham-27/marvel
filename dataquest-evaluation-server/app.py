@@ -1,4 +1,4 @@
-rom flask import Flask, request
+from flask import Flask, request
 import os
 import pandas as pd
 from sklearn.metrics import accuracy_score, multilabel_confusion_matrix, mean_squared_error
