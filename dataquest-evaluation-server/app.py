@@ -18,8 +18,7 @@ def eval1():
 
             print("nkjka")
             file_url = request.json['file_url']
-            #attempt = pd.read_csv(file_url)
-            attempt = pd.read_csv('static/fe-se-1 copy.csv')
+            attempt = pd.read_csv(file_url)
             soln = pd.read_csv('static/fe-se-1.csv')
 
             if not attempt.isnull().sum().sum():
