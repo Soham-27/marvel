@@ -16,19 +16,16 @@ def eval1():
 
         try:
 
-            print("nkjka")
             file_url = request.json['file_url']
             attempt = pd.read_csv(file_url)
             soln = pd.read_csv('static/fe-se-1.csv')
 
             if not attempt.isnull().sum().sum():
 
-                print(soln.shape)
-
-                if attempt.shape == soln.shape:
-                    print("Fine til; here")
-                    attempt = attempt.iloc[:, 1].values
-                    soln = soln.iloc[:, 1].values
+                    print(soln.shape)
+                    
+                    attempt = attempt.loc[:, "survive"].values
+                    soln = soln.loc[:, "survive"].values
                     
                     public_soln = soln[:1000]
                     public_att = attempt[:1000]
@@ -68,24 +65,19 @@ def eval2():
             attempt = pd.read_csv(file_url)
             soln = pd.read_csv('static/te-be-1.csv')
 
-            print(attempt.head)
-
-            print(attempt.shape)
-            print(soln.shape)
+            attempt['product'][attempt['product'] == 2] = "Cap"
+            attempt['product'][attempt['product'] == 1] = "Tee"
+            attempt['product'][attempt['product'] == 0] = "Mug"
 
             if not attempt.isnull().sum().sum():
-
-                if attempt.shape == soln.shape:
                     
-                    attempt_cl = attempt.iloc[:, 2].values
-                    soln_cl = soln.iloc[:, 2].values
+                    attempt_cl = attempt.loc[:, "product"].values
+                    soln_cl = soln.loc[:, "product"].values
 
-                    attempt_reg = attempt.iloc[:, 1].values
-                    soln_reg = soln.iloc[:, 1].values
+                    attempt_reg = attempt.loc[:, "num_sold"].values
+                    soln_reg = soln.loc[:, "num_sold"].values
 
                     pr_mark = int(soln.shape[0]*0.7)
-
-                    print(pr_mark)
                     
                     public_soln_cl = soln_cl[:pr_mark]
                     public_att_cl = attempt_cl[:pr_mark]
@@ -99,6 +91,7 @@ def eval2():
 
                     private_soln_reg = soln_reg[pr_mark:]
                     private_att_reg = attempt_reg[pr_mark:]
+
 
                     public_acc = rmse_tp(public_soln_reg, public_att_reg, public_soln_cl, public_att_cl)
                     private_acc = rmse_tp(private_soln_reg, private_att_reg, private_soln_cl, private_att_cl)
