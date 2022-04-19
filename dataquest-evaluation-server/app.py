@@ -56,8 +56,8 @@ def rmse_tp(reg_soln, reg_att, cl_soln, cl_att):                                
 def eval2():
     if request.method == 'POST':
 
-        private_acc = 200
-        public_acc = 200
+        private_acc = 50000
+        public_acc = 50000
 
         try:
 
