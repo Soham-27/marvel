@@ -59,7 +59,7 @@ def eval2():
             soln = pd.read_csv('static/te-be-2.csv')
             labels = {j:i for i,j in enumerate(soln.Topic.unique().tolist())}
             soln.Topic = soln.Topic.map(labels)
-            attempt.Topic = submission.Topic.map(labels)
+            attempt.Topic = attempt.Topic.map(labels)
             if not attempt.isnull().sum().sum():
                     
                     print(soln.shape)
