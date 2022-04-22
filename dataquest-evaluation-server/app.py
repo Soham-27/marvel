@@ -11,8 +11,8 @@ CORS(app)
 def eval1():
     if request.method == 'POST':
 
-        private_acc = 0
-        public_acc = 0
+        private_acc = 1000000
+        public_acc = 1000000
 
         try:
 
@@ -24,8 +24,8 @@ def eval1():
 
                     print(soln.shape)
                     
-                    attempt = attempt.loc[:, "explosion"].values
-                    soln = soln.loc[:, "explosion"].values
+                    attempt = attempt.loc[:, "explosion_intensity"].values
+                    soln = soln.loc[:, "explosion_intensity"].values
                     
                     public_soln = soln[:8000]
                     public_att = attempt[:8000]
@@ -49,14 +49,14 @@ def eval1():
 def eval2():
     if request.method == 'POST':
 
-        private_acc = 10
-        public_acc = 10
+        private_acc = 0
+        public_acc = 0
 
         try:
 
             file_url = request.json['file_url']
             attempt = pd.read_csv(file_url)
-            soln = pd.read_csv('static/te-be-2.csv')
+            soln = pd.read_csv('static/te-be-round-2.csv')
             labels = {j:i for i,j in enumerate(soln.Topic.unique().tolist())}
             soln.Topic = soln.Topic.map(labels)
             attempt.Topic = attempt.Topic.map(labels)
