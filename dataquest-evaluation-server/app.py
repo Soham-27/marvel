@@ -57,7 +57,9 @@ def eval2():
             file_url = request.json['file_url']
             attempt = pd.read_csv(file_url)
             soln = pd.read_csv('static/te-be-2.csv')
-
+            labels = {j:i for i,j in enumerate(soln.Topic.unique().tolist())}
+            soln.Topic = soln.Topic.map(labels)
+            attempt.Topic = attempt.Topic.map(labels)
             if not attempt.isnull().sum().sum():
                     
                     print(soln.shape)
