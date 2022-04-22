@@ -36,7 +36,7 @@ router.post('/', isUserAuthenticated, async (req, res) => {
         if(seniors.includes(req.user.year)) {
             options = {
                 method: "POST",
-                url: `${process.env.EVALUATION}/te-be-round-1`,
+                url: `${process.env.EVALUATION}/te-be-round-2`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -47,7 +47,7 @@ router.post('/', isUserAuthenticated, async (req, res) => {
         } else {
             options = {
                 method: "POST",
-                url: `${process.env.EVALUATION}/fe-se-round-1`,
+                url: `${process.env.EVALUATION}/fe-se-round-2`,
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -102,7 +102,7 @@ router.get('/leaderboard', isUserAuthenticated ,async (req, res) => {
     try {
         if(seniors.includes(req.user.year)) {
             const response = await client.query(
-                "select  users.first_name, users.last_name, MIN(dataquest2.public_accuracy), users.email from dataquest2 join users on dataquest2.fk_user = users.id where users.year = $1 or users.year = $2 group by users.first_name, users.last_name, users.email order by 3",
+                "select  users.first_name, users.last_name, MAX(dataquest2.public_accuracy), users.email from dataquest2 join users on dataquest2.fk_user = users.id where users.year = $1 or users.year = $2 group by users.first_name, users.last_name, users.email order by 3 DESC",
                 isSenior,
             );
             if (response.rowCount === 0) {
@@ -115,7 +115,7 @@ router.get('/leaderboard', isUserAuthenticated ,async (req, res) => {
             })
         } else {
             const response = await client.query(
-                "select  users.first_name, users.last_name, MAX(dataquest2.public_accuracy), users.email from dataquest2 join users on dataquest2.fk_user = users.id where users.year = $1 or users.year = $2 group by users.first_name, users.last_name, users.email order by 3 DESC",
+                "select  users.first_name, users.last_name, MIN(dataquest2.public_accuracy), users.email from dataquest2 join users on dataquest2.fk_user = users.id where users.year = $1 or users.year = $2 group by users.first_name, users.last_name, users.email order by 3",
                 isSenior,
             );
             if (response.rowCount === 0) {

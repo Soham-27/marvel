@@ -92,4 +92,17 @@ router.get('/', isUserAuthenticated, async (req, res) => {
     }
 })
 
+// router.get('/admin', async (req,res)=>{
+//     try {
+//         const response= await client.query("select * from insight join users on users.id = insight.fk_user");
+//         res.send({
+//              submissions: response.rows
+//         })
+        
+//     } catch (error) {
+//         console.log(error)
+//         res.status(500).send(error)
+//     }
+// })
+
 module.exports = router;
