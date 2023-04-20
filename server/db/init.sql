@@ -124,14 +124,14 @@ CREATE TABLE dataquest (
 CREATE TABLE dataquest2 (
     id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
     fk_user INT,
-CONSTRAINT fk_user FOREIGN KEY(fk_user) REFERENCES users(id) ON DELETE CASCADE,
-submission_csv VARCHAR(2048) NOT NULL,
-submission_python VARCHAR(2048) NOT NULL,
-private_accuracy FLOAT NOT NULL,
-public_accuracy FLOAT NOT NULL,
-    active_submission BOOLEAN NOT NULL,
-created_at TIMESTAMP NOT NULL,
-updated_at TIMESTAMP NOT NULL
+	CONSTRAINT fk_user FOREIGN KEY(fk_user) REFERENCES users(id) ON DELETE CASCADE,
+	submission_csv VARCHAR(2048) NOT NULL,
+	submission_python VARCHAR(2048) NOT NULL,
+	private_accuracy FLOAT NOT NULL,
+	public_accuracy FLOAT NOT NULL,
+		active_submission BOOLEAN NOT NULL,
+	created_at TIMESTAMP NOT NULL,
+	updated_at TIMESTAMP NOT NULL
 );
 
 CREATE TABLE Admin(
