@@ -10,13 +10,13 @@ const configDev = {
   database: "submission",
 };
 console.log(process.env.CONN_STRING);
-const configProd = {
-  connectionString: process.env.CONN_STRING,
-  ssl: {
-    rejectUnauthorized: false,
-    ca: fs.readFileSync("ca-certificate.crt").toString(),
-  },
-};
+// const configProd = {
+//   connectionString: process.env.CONN_STRING,
+//   ssl: {
+//     rejectUnauthorized: false,
+//     ca: fs.readFileSync("ca-certificate.crt").toString(),
+//   },
+// };
 
 // const configProd = {};s
 
