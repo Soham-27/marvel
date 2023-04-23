@@ -24,6 +24,11 @@ const masterEvents = [
     ems_id: 14,
     name: "Paper Presentation",
   },
+  {
+    id: 6,
+    ems_id: 18,
+    name: "Freeze the second",
+  },
 ];
 
 const emsIds = {
@@ -32,6 +37,7 @@ const emsIds = {
   insight: 15,
   photoshop: 16,
   paper: 14,
+  freeze: 18,
 };
 
 module.exports = { masterEvents, emsIds };
