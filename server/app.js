@@ -14,7 +14,7 @@ const photoshopRouter = require("./routes/photoshop");
 const insightRouter = require("./routes/insight");
 const dataquestRouter = require("./routes/dataquest");
 const dataquest2Router = require("./routes/dataquest2");
-const frrezeRouter = require("../routes/freeze");
+const freezeRouter = require("../routes/freeze");
 // const adminRouter= require("./routes/adminRoutes");
 
 let app = express();
@@ -39,7 +39,7 @@ app.use("/photoshop", photoshopRouter);
 app.use("/insight", insightRouter);
 app.use("/dataquest", dataquestRouter);
 app.use("/dataquest2", dataquest2Router);
-app.use("/freeze", frrezeRouter);
+app.use("/freeze", freezeRouter);
 // app.use("/admin", adminRouter);
 
 app.use("/", indexRouter);
