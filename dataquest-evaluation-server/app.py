@@ -7,46 +7,8 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/fe-se-round-2', methods=['POST'])
+@app.route('/dataquest-round-1', methods=['POST'])
 def eval1():
-    if request.method == 'POST':
-
-        private_acc = 1000000
-        public_acc = 1000000
-
-        try:
-
-            file_url = request.json['file_url']
-            attempt = pd.read_csv(file_url)
-            soln = pd.read_csv('static/fe-se-2.csv')
-
-            if not attempt.isnull().sum().sum():
-
-                    print(soln.shape)
-                    
-                    attempt = attempt.loc[:, "explosion_intensity"].values
-                    soln = soln.loc[:, "explosion_intensity"].values
-                    
-                    public_soln = soln[:8000]
-                    public_att = attempt[:8000]
-
-                    private_soln = soln[8000:]
-                    private_att = attempt[8000:]
-
-                    public_acc = mean_squared_error(public_soln, public_att)
-                    private_acc = mean_squared_error(private_soln, private_att)
-
-            return {'private': private_acc,
-        'public': public_acc}
-
-        except:
-            return {'private': private_acc,
-        'public': public_acc}
-
-
-
-@app.route('/te-be-round-2', methods=['POST'])
-def eval2():
     if request.method == 'POST':
 
         private_acc = 0
@@ -56,32 +18,94 @@ def eval2():
 
             file_url = request.json['file_url']
             attempt = pd.read_csv(file_url)
-            soln = pd.read_csv('static/te-be-round-2.csv')
-            labels = {j:i for i,j in enumerate(soln.Topic.unique().tolist())}
-            soln.Topic = soln.Topic.map(labels)
-            attempt.Topic = attempt.Topic.map(labels)
-            if not attempt.isnull().sum().sum():
-                    
-                    print(soln.shape)
-                    
-                    attempt = attempt.loc[:, "Topic"].values
-                    soln = soln.loc[:, "Topic"].values
-                    
-                    public_soln = soln[:1400]
-                    public_att = attempt[:1400]
+            soln = pd.read_csv('static/test_data_r1_server.csv')
 
-                    private_soln = soln[1400:]
-                    private_att = attempt[1400:]
+            attempt = attempt[['customerID','Repeat Purchase']]
 
-                    public_acc = f1_score(public_soln, public_att, average='macro')
-                    private_acc = f1_score(private_soln, private_att, average='macro')
+            attempt['Repeat Purchase'] = attempt['Repeat Purchase'].apply(lambda x: x.lower())
+            soln['Repeat Purchase'] = soln['Repeat Purchase'].apply(lambda x: x.lower())
+
+            if attempt.shape == soln.shape:
+                print("Fine till here")
+                attempt = attempt.iloc[:, 1].values
+                soln = soln.iloc[:, 1].values
+                
+                public_soln = soln[:1500]
+                public_att = attempt[:1500]
+
+                private_soln = soln[1500:]
+                private_att = attempt[1500:]
+
+                public_acc = accuracy_score(public_soln, public_att)
+                private_acc = accuracy_score(private_soln, private_att)
 
             return {'private': private_acc,
-        'public': public_acc}
-
+            'public': public_acc}
+    
         except:
-            return {'private': private_acc,
-        'public': public_acc}
+
+            return{
+                'private': 0,
+                'public': 0
+            }
+        
+def rmse_tp(reg_soln, reg_att):                                 ## rmse true positives
+    mse = mean_squared_error(reg_soln, reg_att)
+    print(mse)
+    return mse
+
+
+
+@app.route('/te-be-round-2', methods=['POST'])
+def eval2():
+
+        if request.method == 'POST':
+
+            file_url = request.json['file_url']
+            attempt = pd.read_csv(file_url)
+            soln = pd.read_csv('Static/test_data_round2_server.csv')
+
+            print(attempt.shape)
+            print(soln.shape)
+
+            private_acc = 2000000
+            public_acc = 2000000
+
+            try:
+
+                if attempt.shape == soln.shape:
+
+                    print("shape equal")
+
+                    attempt_reg = attempt.iloc[:, -1].values
+                    soln_reg = soln.iloc[:, -1].values
+
+                    pr_mark = int(soln.shape[0]*0.7)
+
+                    print(pr_mark)
+                    
+                    public_soln_reg = soln_reg[:pr_mark]
+                    public_att_reg = attempt_reg[:pr_mark]
+
+                    private_soln_reg = soln_reg[pr_mark:]
+                    private_att_reg = attempt_reg[pr_mark:]
+
+                    public_acc = rmse_tp(public_soln_reg, public_att_reg)
+
+                    print(public_acc)
+
+                    private_acc = rmse_tp(private_soln_reg, private_att_reg)
+
+                    print(private_acc)
+
+                return {'private': private_acc,
+                'public': public_acc}
+            
+            except:
+                return {
+                    'private': 2000000,
+                    'public': 2000000
+                }
 
 # if __name__ == "__main__":
 #     port = int(os.environ.get('PORT', 5000))
