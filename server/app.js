@@ -14,7 +14,7 @@ const photoshopRouter = require("./routes/photoshop");
 const insightRouter = require("./routes/insight");
 const dataquestRouter = require("./routes/dataquest");
 const dataquest2Router = require("./routes/dataquest2");
-const freezeRouter = require("../routes/freeze");
+const freezeRouter = require("./routes/freeze");
 // const adminRouter= require("./routes/adminRoutes");
 
 let app = express();
