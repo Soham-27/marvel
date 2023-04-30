@@ -95,7 +95,7 @@ CREATE TABLE photoshop (
 	updated_at TIMESTAMP NOT NULL
 );
 
-CREATE TABLE freeze (
+CREATE TABLE freeze_submission (
     id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
 	submission VARCHAR(2048) NOT NULL,
     active_submission BOOLEAN NOT NULL,

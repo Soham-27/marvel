@@ -21,7 +21,7 @@ router.post('/', isUserAuthenticated, async (req, res) => {
             })
         }
 
-        const query = `select exists (select * from freeze where fk_user = $1)`
+        const query = `select exists (select * from freeze_submission where fk_user = $1)`
         const result = await client.query(query, [req.user.id]);
         if(result.rows[0].exists) {
             return res.status(400).send({
@@ -30,7 +30,7 @@ router.post('/', isUserAuthenticated, async (req, res) => {
         }
 
         const response = await client.query(
-            "INSERT INTO freeze(submission, active_submission, fk_user, created_at, updated_at) VALUES($1, $2, $3, $4, $5) RETURNING * ",
+            "INSERT INTO freeze_submission(submission, active_submission, fk_user, created_at, updated_at) VALUES($1, $2, $3, $4, $5) RETURNING * ",
             [submission, true, req.user.id, new Date(), new Date()]
         );
         res.send({
@@ -52,7 +52,7 @@ router.post('/', isUserAuthenticated, async (req, res) => {
 router.get('/', isUserAuthenticated, async (req, res) => {
     try {
         const response = await client.query(
-            "SELECT * FROM freeze WHERE fk_user= $1",
+            "SELECT * FROM freeze_submission WHERE fk_user= $1",
             [req.user.id]
         );
 
