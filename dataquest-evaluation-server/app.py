@@ -18,7 +18,7 @@ def eval1():
 
             file_url = request.json['file_url']
             attempt = pd.read_csv(file_url)
-            soln = pd.read_csv('static/test_data_r1_server.csv')
+            soln = pd.read_csv('Static/test_data_r1_server.csv')
 
             attempt = attempt[['customerID','Repeat Purchase']]
 
