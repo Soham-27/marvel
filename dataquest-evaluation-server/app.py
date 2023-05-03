@@ -61,17 +61,17 @@ def eval2():
 
         if request.method == 'POST':
 
-            file_url = request.json['file_url']
-            attempt = pd.read_csv(file_url)
-            soln = pd.read_csv('Static/test_data_round2_server.csv')
-
-            print(attempt.shape)
-            print(soln.shape)
-
-            private_acc = 2000000
-            public_acc = 2000000
-
             try:
+
+                file_url = request.json['file_url']
+                attempt = pd.read_csv(file_url)
+                soln = pd.read_csv('Static/test_data_round2_server.csv')
+
+                print(attempt.shape)
+                print(soln.shape)
+
+                private_acc = 200000000
+                public_acc = 200000000
 
                 if attempt.shape == soln.shape:
 
@@ -103,8 +103,8 @@ def eval2():
             
             except:
                 return {
-                    'private': 2000000,
-                    'public': 2000000
+                    'private': 200000000,
+                    'public': 200000000
                 }
 
 # if __name__ == "__main__":
