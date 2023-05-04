@@ -34,7 +34,7 @@ router.post("/", isUserAuthenticated, async (req, res) => {
       });
     }
     let options;
-    if (seniors.includes(req.user.year)) {
+    
       options = {
         method: "POST",
         url: `${process.env.EVALUATION}/te-be-round-2`,
@@ -45,7 +45,7 @@ router.post("/", isUserAuthenticated, async (req, res) => {
           file_url: submission_csv,
         },
       };
-    }
+    
     console.log("No error at line 48");
     const accData = await axios(options);
     console.log("No error at line 50");
