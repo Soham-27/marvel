@@ -139,7 +139,7 @@ CREATE TABLE dataquest2 (
 	submission_python VARCHAR(2048) NOT NULL,
 	private_accuracy FLOAT NOT NULL,
 	public_accuracy FLOAT NOT NULL,
-		active_submission BOOLEAN NOT NULL,
+	active_submission BOOLEAN NOT NULL,
 	created_at TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP NOT NULL
 );

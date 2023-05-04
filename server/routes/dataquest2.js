@@ -9,6 +9,7 @@ const { emsIds } = require("../models/master");
 const router = new express.Router();
 
 router.post("/", isUserAuthenticated, async (req, res) => {
+  console.log("in dataquest 2");
   const seniors = ["TE", "BE"];
   const { submission_csv } = req.body;
   const { submission_python } = req.body;
@@ -45,8 +46,9 @@ router.post("/", isUserAuthenticated, async (req, res) => {
         },
       };
     }
-
+    console.log("No error at line 48");
     const accData = await axios(options);
+    console.log("No error at line 50");
     const private_accuracy = accData.data.private;
     const public_accuracy = accData.data.public;
     const response = await client.query(
