@@ -98,7 +98,7 @@ router.get("/", isUserAuthenticated, async (req, res) => {
 });
 
 router.get("/leaderboard", isUserAuthenticated, async (req, res) => {
-  const seniors = ["FE", "SE", "TE", "BE"];
+  const seniors = ["TE", "BE"];
   const isSenior = seniors.includes(req.user.year) ? seniors : ["FE", "SE"];
   try {
     if (seniors.includes(req.user.year)) {
