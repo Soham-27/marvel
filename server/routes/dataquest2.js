@@ -116,7 +116,7 @@ router.get("/leaderboard", isUserAuthenticated, async (req, res) => {
     //   });
     // } else {
     const response = await client.query(
-      "select  users.first_name, users.last_name, MIN(dataquest2.public_accuracy), users.email from dataquest2 join users on dataquest2.fk_user = users.id where users.year = $1 or users.year = $2 group by users.first_name, users.last_name, users.email order by 3 limit 3",
+      "select  users.first_name, users.last_name, MIN(dataquest2.public_accuracy), users.email from dataquest2 join users on dataquest2.fk_user = users.id where users.year = $1 or users.year = $2 or users.year = $3 or users.year = $4 group by users.first_name, users.last_name, users.email order by 3 limit 3",
       isSenior
     );
     if (response.rowCount === 0) {
