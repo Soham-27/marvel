@@ -9,7 +9,7 @@ const { emsIds } = require("../models/master");
 const router = new express.Router();
 
 router.post("/", isUserAuthenticated, async (req, res) => {
-  const seniors = ["FE", "SE", "TE", "BE"];
+  const seniors = ["TE", "BE"];
   const { submission_csv } = req.body;
   const { submission_python } = req.body;
   const ems_id = emsIds.dataquest;
@@ -101,7 +101,7 @@ router.get("/leaderboard", isUserAuthenticated, async (req, res) => {
   try {
     if (seniors.includes(req.user.year)) {
       const response = await client.query(
-        "select  users.first_name, users.last_name, MAX(dataquest2.public_accuracy), users.email from dataquest2 join users on dataquest2.fk_user = users.id where users.year = $1 or users.year = $2 group by users.first_name, users.last_name, users.email order by 3 DESC",
+        "select  users.first_name, users.last_name, MAX(dataquest2.public_accuracy), users.email from dataquest2 join users on dataquest2.fk_user = users.id where users.year = $1 or users.year = $2 group by users.first_name, users.last_name, users.email order by 3 DESC limit 3",
         isSenior
       );
       if (response.rowCount === 0) {
@@ -114,7 +114,7 @@ router.get("/leaderboard", isUserAuthenticated, async (req, res) => {
       });
     } else {
       const response = await client.query(
-        "select  users.first_name, users.last_name, MIN(dataquest2.public_accuracy), users.email from dataquest2 join users on dataquest2.fk_user = users.id where users.year = $1 or users.year = $2 group by users.first_name, users.last_name, users.email order by 3",
+        "select  users.first_name, users.last_name, MIN(dataquest2.public_accuracy), users.email from dataquest2 join users on dataquest2.fk_user = users.id where users.year = $1 or users.year = $2 group by users.first_name, users.last_name, users.email order by 3 limit 3",
         isSenior
       );
       if (response.rowCount === 0) {
