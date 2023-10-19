@@ -7,23 +7,27 @@ const { emsIds } = require("../models/master");
 
 const router = new express.Router();
 
-router.post("/", isUserAuthenticated, async (req, res) => {
+router.post("/", isUserAuthenticated, async (req, res) =>
+{
   const { submission } = req.body;
   const ems_id = emsIds.web;
-  try {
+  try
+  {
     const data = await client.query(
       "SELECT * FROM user_events WHERE fk_user=$1 and ems_id=$2",
       [req.user.id, ems_id]
     );
 
-    if (data.rowCount === 0) {
+    if (data.rowCount === 0)
+    {
       return res.status(400).send({
         error: "User havent Registered ",
       });
     }
     const query = `select exists (select * from webapp where fk_user = $1)`;
     const result = await client.query(query, [req.user.id]);
-    if (result.rows[0].exists) {
+    if (result.rows[0].exists)
+    {
       return res.status(400).send({
         error: "Entry Already Submitted",
       });
@@ -35,7 +39,8 @@ router.post("/", isUserAuthenticated, async (req, res) => {
     res.send({
       submission: response.rows[0],
     });
-  } catch (error) {
+  } catch (error)
+  {
     console.log(error);
     res.status(500).send({
       error: "Internal Server error",
@@ -43,14 +48,17 @@ router.post("/", isUserAuthenticated, async (req, res) => {
   }
 });
 
-router.get("/", isUserAuthenticated, async (req, res) => {
-  try {
+router.get("/", isUserAuthenticated, async (req, res) =>
+{
+  try
+  {
     const response = await client.query(
       "SELECT * FROM webapp WHERE fk_user= $1",
       [req.user.id]
     );
 
-    if (response.rowCount === 0) {
+    if (response.rowCount === 0)
+    {
       return res.status(400).send({
         error: "Nothing Submitted",
       });
@@ -58,7 +66,8 @@ router.get("/", isUserAuthenticated, async (req, res) => {
     res.send({
       submission: response.rows[0],
     });
-  } catch (error) {
+  } catch (error)
+  {
     console.log(error);
     res.status(500).send({
       error: "Internal Server error",
