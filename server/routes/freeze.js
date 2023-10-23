@@ -16,7 +16,9 @@ router.post('/', isUserAuthenticated, async (req, res) => {
         );
 
         if (data.rowCount === 0) {
+            console.log("Common")
             return res.status(400).send({
+                
                 error: "User havent Registered "
             })
         }
@@ -55,8 +57,9 @@ router.get('/', isUserAuthenticated, async (req, res) => {
             "SELECT * FROM freeze_submission WHERE fk_user= $1",
             [req.user.id]
         );
-
+         console.log("Request aayi");   
         if (response.rowCount === 0) {
+            console.log("No dude no");
             return res.status(400).send({
                 error: "Nothing Submitted"
             })
