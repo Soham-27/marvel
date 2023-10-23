@@ -19,8 +19,6 @@ const masterEvents = [
     ems_id: 5,
     name: "DataQuest",
   },
- 
- 
 ];
 
 const emsIds = {

@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.post('/', isUserAuthenticated, async (req, res) => {
     const { submission } = req.body;
+    console.log(submission);
     const ems_id = emsIds.freeze;
     try {
 
