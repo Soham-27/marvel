@@ -28,7 +28,7 @@ router.post("/", isUserAuthenticated, async (req, res) => {
     }
     const query = `select * from dataquest where fk_user = $1 and Date(created_at) = $2`;
     const result = await client.query(query, [req.user.id, currDate]);
-    if (result.rowCount >= 100) {
+    if (result.rowCount >= 5) {
       return res.status(400).send({
         error: "You have reached maximum submission limit for today.",
       });
