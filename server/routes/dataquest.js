@@ -9,7 +9,7 @@ const { emsIds } = require("../models/master");
 const router = new express.Router();
 
 router.post("/", isUserAuthenticated, async (req, res) => {
-  //const seniors = [ 'TE', 'BE' ]
+  // const seniors = [ 'TE', 'BE' ]
   const { submission_csv } = req.body;
   const { submission_python } = req.body;
   const ems_id = emsIds.dataquest;
@@ -28,13 +28,13 @@ router.post("/", isUserAuthenticated, async (req, res) => {
     }
     const query = `select * from dataquest where fk_user = $1 and Date(created_at) = $2`;
     const result = await client.query(query, [req.user.id, currDate]);
-    if (result.rowCount >= 3) {
+    if (result.rowCount >= 100) {
       return res.status(400).send({
         error: "You have reached maximum submission limit for today.",
       });
     }
     let options;
-
+    console.log("at 37",submission_csv)
     options = {
       method: "POST",
       url: `${process.env.EVALUATION}/dataquest-round-1`,
@@ -43,10 +43,12 @@ router.post("/", isUserAuthenticated, async (req, res) => {
       },
       data: {
         file_url: submission_csv,
+        seniority: req.user.year,
       },
     };
 
     const accData = await axios(options);
+    console.log(accData);
     const private_accuracy = accData.data.private;
     const public_accuracy = accData.data.public;
     const response = await client.query(
