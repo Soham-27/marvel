@@ -118,7 +118,7 @@ router.get("/leaderboard", isUserAuthenticated, async (req, res) => {
     const response = await client.query(
       "select  users.first_name, users.last_name, MAX(dataquest.public_accuracy), users.email from dataquest join users on dataquest.fk_user = users.id group by users.first_name, users.last_name, users.email order by 3 DESC limit 5"
     );
-    if (response.rowCount === 0) {
+    if (response.rowCount <= 2) {
       return res.status(400).send({
         error: "Leaderboard is empty",
       });
