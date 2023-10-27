@@ -1,7 +1,7 @@
 from flask import Flask, request
 import os
 import pandas as pd
-from sklearn.metrics import accuracy_score, f1_score, mean_squared_error
+from sklearn.metrics import accuracy_score, f1_score, mean_squared_error,r2_score
 import numpy as np
 from flask_cors import CORS
 
@@ -87,19 +87,15 @@ def eval2():
                 private_soln = soln[1000:]
                 private_att = attempt[1000:]
                 
-                public_mse = mean_squared_error(public_soln, public_att)
-                private_mse = mean_squared_error(private_soln, private_att)
-                public_mse = np.sqrt(public_mse)
-                private_mse = np.sqrt(private_mse)
-               
-
+                public_mse = r2_score(public_soln, public_att)
+                private_mse = r2_score(private_soln, private_att)
             return {'private': private_mse,'public': public_mse,'except':exec}
     
         except:
 
             return{
-                'private': 500000,
-                'public': 500000,
+                'private': 0,
+                'public': 0,
                 'except' : exec
             }
 
