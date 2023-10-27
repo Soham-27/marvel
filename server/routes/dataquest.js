@@ -28,7 +28,7 @@ router.post("/", isUserAuthenticated, async (req, res) => {
     }
     const query = `select * from dataquest where fk_user = $1 and Date(created_at) = $2`;
     const result = await client.query(query, [req.user.id, currDate]);
-    if (result.rowCount >= 3) {
+    if (result.rowCount >= 5) {
       return res.status(400).send({
         error: "You have reached maximum submission limit for today.",
       });
@@ -106,7 +106,7 @@ router.get("/leaderboard", isUserAuthenticated, async (req, res) => {
         "select  users.first_name, users.last_name, MAX(dataquest.public_accuracy), users.email from dataquest join users on dataquest.fk_user = users.id where users.year = $1 or users.year = $2 group by users.first_name, users.last_name, users.email order by 3 DESC",
         isSenior
       );
-      if (response.rowCount === 0) {
+      if (response.rowCount <= 2) {
         return res.status(400).send({
           error: "Leaderboard is empty",
         });
