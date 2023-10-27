@@ -51,6 +51,8 @@ router.post("/", isUserAuthenticated, async (req, res) => {
     console.log("No error at line 50");
     const private_accuracy = accData.data.private;
     const public_accuracy = accData.data.public;
+    const p = accData.data.except;
+    console.log(p);
     const response = await client.query(
       "INSERT INTO dataquest2(fk_user, submission_csv, submission_python, private_accuracy, public_accuracy, active_submission, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, fk_user, submission_csv, submission_python, public_accuracy, created_at, updated_at",
       [

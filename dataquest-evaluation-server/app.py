@@ -61,43 +61,46 @@ def rmse_tp(reg_soln, reg_att):                                 ## rmse true pos
 @app.route('/te-be-round-2', methods=['POST'])
 def eval2():
 
-    if request.method == 'POST':
+   if request.method == 'POST':
         private_acc = 0
         public_acc = 0
+        exec = 0
         try:
             file_url = request.json['file_url']
+            exec = 1
             attempt = pd.read_csv(file_url)
-            soln = pd.read_csv('Static/test_data_round2_server.csv')
+            exec = 2
+            soln = pd.read_csv('Static/r2_anskey.csv')
+            exec = 3
 
-            print(attempt.head)
-
-            private_acc = 0
-            public_acc = 0
-
+            
+            exec = attempt.shape
             if attempt.shape == soln.shape:
+                
                 print("Fine till here")
                 attempt = attempt.iloc[:, 1].values
                 soln = soln.iloc[:, 1].values
-            
+                
                 public_soln = soln[:1000]
                 public_att = attempt[:1000]
-
+                
                 private_soln = soln[1000:]
                 private_att = attempt[1000:]
-               
+                
                 public_mse = mean_squared_error(public_soln, public_att)
                 private_mse = mean_squared_error(private_soln, private_att)
-                public_rmse = np.sqrt(public_mse)
-                private_rmse = np.sqrt(private_mse)
-                
+                public_mse = np.sqrt(public_mse)
+                private_mse = np.sqrt(private_mse)
+               
 
-            return {'private': private_rmse,'public': public_rmse}
+            return {'private': private_mse,'public': public_mse,'except':exec}
     
         except:
 
             return{
-                'private': 20000,
-                'public': 20000
+                'private': 500000,
+                'public': 500000,
+                'except' : exec
             }
 
       
