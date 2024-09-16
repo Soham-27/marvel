@@ -1,26 +1,22 @@
-const express = require('express');
-const client = require('../db/connect');
-const isUserAuthenticated = require('../middleware/userMiddleware');
+const client = require("../db/connect");
 const { emsIds } = require("../models/master");
 
-const router = express.Router();
-
-router.post('/', isUserAuthenticated, async (req, res) => {
+const postPaper=async (req, res) => {
     // const { submission } = req.body;
     const { paper_type } = req.body;
-    const ems_id = emsIds.paper;
+    //const ems_id = emsIds.paper;
     try {
         //this is version 2
-        const data = await client.query(
-            "SELECT* FROM user_events WHERE fk_user=$1 and ems_id=$2",
-            [req.user.id, ems_id]
-        );
+        // const data = await client.query(
+        //     "SELECT* FROM user_events WHERE fk_user=$1 and fk_event=$2",
+        //     [req.user.id, ems_id]
+        // );
 
-        if (data.rowCount === 0) {
-            return res.status(400).send({
-                error: "User havent Registered "
-            })
-        }
+        // if (data.rowCount === 0) {
+        //     return res.status(400).send({
+        //         error: "User haven't Registered "
+        //     })
+        // }
 
         const query = `select exists (select * from paper where fk_user = $1)`
         const result = await client.query(query, [req.user.id]);
@@ -68,9 +64,10 @@ router.post('/', isUserAuthenticated, async (req, res) => {
             error: "Internal Server error"
         });
     }
-})
+}
 
-router.get('/', isUserAuthenticated, async (req, res) => {
+
+const getPaper= async (req, res) => {
     try {
         const response = await client.query(
             "SELECT * FROM paper WHERE fk_user= $1",
@@ -90,19 +87,5 @@ router.get('/', isUserAuthenticated, async (req, res) => {
             error: "Internal Server error"
         });
     }
-})
-
-// router.get('/admin', async (req,res)=>{
-//     try {
-//         const response= await client.query("select * from insight join users on users.id = insight.fk_user");
-//         res.send({
-//              submissions: response.rows
-//         })
-        
-//     } catch (error) {
-//         console.log(error)
-//         res.status(500).send(error)
-//     }
-// })
-
-module.exports = router;
+}
+module.exports={postPaper,getPaper};

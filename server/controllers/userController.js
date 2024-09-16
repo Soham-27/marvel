@@ -1,31 +1,30 @@
-const axios = require('axios');
-const express = require('express');
-const client = require('../db/connect');
-const isUserAuthenticated = require('../middleware/userMiddleware');
-const generateUserToken = require("../utils/generateUserTokens");
-const fetchEvents = require('../utils/fetchEvents');
+const axios=require("axios"); 
+const client = require("../db/connect");
+const {generateUserToken} = require("../utils/generateUserTokens");
+const {FetchUserSubmissionEvents}= require("../utils/fetchEvents");
 
-const router = new express.Router();
 
-router.post('/signin', async (req, res) => {
+const signInUser=async (req, res) => {
     const { email, password } = req.body;
+    console.log(`email : ${email}`);
+    console.log(`password : ${password}`); 
     const options = {
         method: "POST",
-        url: `${process.env.EMS_API}/user/signin`,
+        url: `https://pulzion22-ems-backend-evj4.onrender.com/user/signin`,
         headers: {
             "Content-Type": "application/json",
         },
         data: {
             email,
             password
-        },
+        }, 
     };
     try {
         let response = await axios(options)
         let user = response.data.user;
         if (response?.data?.error) {
             return res.status(400).send({ 
-                error: response.data.error,
+                error: response.data.error, 
             })
         }
         const ems_token = response.data.token;
@@ -35,16 +34,18 @@ router.post('/signin', async (req, res) => {
                 "INSERT INTO users( first_name, last_name, email, mobile_number, college, year, created_at, updated_at, ems_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
                 [user.first_name, user.last_name, user.email, user.mobile_number, user.college, user.year, new Date(), new Date(), user.id]
             );
-        }
+        } 
         user = response.rows[0]
+        console.log(user);
         const userId = user.id;
         const token = await generateUserToken(userId, ems_token);
 
-        await fetchEvents(ems_token, userId);
+        // await fetchEvents(ems_token, userId);
+       await FetchUserSubmissionEvents(ems_token,userId);
 
         res.send({
             user,
-            token,
+            token, 
             ems_token
         })
     } catch (err) {
@@ -59,34 +60,59 @@ router.post('/signin', async (req, res) => {
         else if (duplicateError === "users_mobile_number_key") {
             res.status(409).json({ error: "User with this mobile_number already extsts" })
         }
-        else { 
+        else {
             res.status(500).json({ error: "Internal Server Error" });
         }
     }
-})
+};
 
-router.get('/me', isUserAuthenticated, (req, res) => {
-    res.send({
-        user: req.user,
-    }) 
-})
-
-router.post('/signout', isUserAuthenticated, async (req, res) => {    
+const GetUserEvent=async(req,res)=>{
+    try {
+        const userId=req.user.id;
+        if(!userId){
+            res.status(400).json({message:"user not found !!"})
+        }
+        const query=`SELECT 
+    e.id AS event_id,
+    e.logo,
+    se.event_name,
+    se.event_route,
+    se.event_status
+FROM 
+    user_events ue
+JOIN 
+    event e ON ue.fk_event = e.id
+JOIN 
+    submission_event se ON se.event_id = e.id
+WHERE 
+    ue.fk_user = $1;  -- Replace $1 with the user_id parameter
+`
+    const params=[userId];
+    const result=await client.query(query,params);
+    if(result.rowCount==0){
+        res.status(500).json({message:"not registered to any event !!"});
+    }
+    return res.status(200).json(result.rows);
+    } catch (error) {
+        
+    }
+}
+const signoutUser= async (req, res) => {    
     const options = {
         method: "POST",
-        url: `${process.env.EMS_API}/user/signout`,
+        url: `https://pulzion22-ems-backend-evj4.onrender.com/user/signout`,
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${req.ems_token}`,
         },
     };
-    try {
+    try {   
         const query = "delete from user_token where token = $1";
         const params = [req.token];
         const data = await client.query(query, params);
         if (data.rowCount === 1) {
             return res.status(200).json({ success: "successfully logged out" });
-        } else {
+        } else { 
             const response = await axios(options);
             return res.status(500).json({ error: "Unable to log out" });
         }
@@ -97,6 +123,6 @@ router.post('/signout', isUserAuthenticated, async (req, res) => {
         }
         return res.status(500).json({ error: "Internal Server Error" });
     }
-})
+}
 
-module.exports = router;
+module.exports={signInUser,signoutUser,GetUserEvent};    

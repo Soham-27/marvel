@@ -27,25 +27,46 @@ CREATE TABLE user_token (
 	created_at TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP NOT NULL
 );
-
+   
 CREATE TYPE choice AS ENUM ('Technical', 'Non Technical');
 CREATE TYPE store AS ENUM ('Online', 'Offline', 'Blended');
 
-CREATE TABLE user_events (
-	id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
-	ems_id INT NOT NULL,
+
+CREATE TABLE event (
+	id INT GENE	RATED ALWAYS AS IDENTITY UNIQUE,
 	name VARCHAR(255) NOT NULL,
 	description TEXT NOT NULL,
-	type choice,
-	mode store,
+	type text,
+	mode text,
 	is_active BOOLEAN NOT NULL,
    	play BOOLEAN NOT NULL,
+	price INT NOT NULL,
+   	link VARCHAR(255),
 	tagline VARCHAR(255) NOT NULL,
 	logo VARCHAR(255) NOT NULL,
-	start_time TIMESTAMP,
-	end_time TIMESTAMP,
+	rules TEXT NOT NULL,
+	rounds TEXT NOT NULL,
+	teams TEXT NOT NULL,
+	notes TEXT NOT NULL,
+	created_at TIMESTAMP NOT NULL,
+	updated_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE submission_event(
+	id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
+	event_id int not null UNIQUE,
+	event_name text not null,
+	event_route text not null,
+	event_status BOOLEAN 
+	CONSTRAINT event_id FOREIGN KEY(event_id) REFERENCES event(id) ON DELETE CASCADE,
+)
+
+CREATE TABLE user_events (
+	id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
+	fk_event INT NOT NULL,
 	fk_user INT,
 	CONSTRAINT fk_user FOREIGN KEY(fk_user) REFERENCES users(id) ON DELETE CASCADE,
+	CONSTRAINT fk_event FOREIGN KEY(fk_event) REFERENCES event(id) ON DELETE CASCADE,
 	created_at TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP NOT NULL
 );
@@ -62,7 +83,7 @@ CREATE TABLE user_events (
 -- );
 
 CREATE TABLE webapp (
-    id INT GENERATED ALWAYS AS IDENTITY UNIQUE,
+    id INT GENERATED ALWAYS AS IDENTITY UNIQUE, 
 	submission VARCHAR(2048) NOT NULL,
     active_submission BOOLEAN NOT NULL,
 	fk_user INT,
